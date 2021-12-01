@@ -1,8 +1,10 @@
 import style from './Window.module.css';
+
 import { useState } from 'react';
 
-export const Window = ({ active, setActive, author }) => {
+export const Window = ({ isActive, setIsActive, author, deleteImage, setDelete }) => {
   const [inputValue, setInputValue] = useState('');
+
 
   const handleButtonClick = (value) => {
     if (value) {
@@ -21,17 +23,18 @@ export const Window = ({ active, setActive, author }) => {
         .then((json) => {
           console.log(json);
           alert('Request has been sent');
-        });
-      setActive(false);
+        })
+        .catch(error => console.log(error));
+      setIsActive(false);
       setInputValue('');
+      setDelete(!deleteImage);
     } else {
       alert('Input your message!');
     }
-
   };
 
   return (
-    <div className={active ? style.modal_active : style.modal} onClick={() => setActive(false)}>
+    <div className={isActive ? style.modal_active : style.modal} onClick={() => setIsActive(false)}>
       <div className={style.modal_content} onClick={event => event.stopPropagation()}>
         Author: {author}
         <input

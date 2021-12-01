@@ -5,8 +5,10 @@ import { Window } from '../Window/Window';
 
 export const Home = () => {
   const [urlImages, setUrlImages] = useState([]);
-  const [modalActive, setModalActive] = useState(false);
+  const [isModalActive, setIsModalActive] = useState(false);
   const [currentAuthor, setCurrentAuthor] = useState('');
+  const [deleteImage, setDeleteImage] = useState('false');
+  const [deleteId, setDeleteId] = useState(0);
 
   const loadUrlImages = async () => {
     const data = await RequestAPI();
@@ -14,14 +16,20 @@ export const Home = () => {
   };
 
   const handleOnClick = (author, id) => {
-    setModalActive(true);
+    setIsModalActive(true);
     setCurrentAuthor(author);
-    setUrlImages(urlImages.filter(image => image.id !== id));
+    setDeleteId(id);
   };
 
   useEffect(() => {
     loadUrlImages();
   }, []);
+
+
+  useEffect(() => {
+    setUrlImages(urlImages.filter(image => image.id !== deleteId));
+  }, [deleteImage]);
+
 
   return (
     <div>
@@ -31,16 +39,18 @@ export const Home = () => {
         >
           <img style={{ width: `${image.width / 5}px`, height: `${image.height / 5}px` }}
                src={image.download_url}
-               alt={'images'}
+               alt={image.author}
                onClick={() => handleOnClick(image.author, image.id)}
           />
         </li>)}
       </ul>
       <div>
         <Window
-          active={modalActive}
-          setActive={setModalActive}
+          isActive={isModalActive}
+          setIsActive={setIsModalActive}
           author={currentAuthor}
+          deleteImage={deleteImage}
+          setDelete={setDeleteImage}
         />
       </div>
     </div>
