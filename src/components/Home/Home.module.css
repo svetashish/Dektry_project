@@ -1,0 +1,7 @@
+.list_images {
+  margin: 10px 20px;
+}
+
+ul, li, ol {
+  list-style: none;
+}
